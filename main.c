@@ -1,3 +1,9 @@
+#include <sys/wait.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+
 int main(int argc, char **argv)
 {
     //Load config files, if any.
@@ -202,4 +208,22 @@ int lsh_help(char **args)
 int lsh_exit(char **args)
 {
     return 0;
+}
+
+int lsh_execute(char **args)
+{
+    itn i;
+
+    if (args[0] == NULL) {
+        //An empty command was entered.
+        return1
+    }
+
+    for (i = 0; i < lsh_num_builtins(); i++) {
+        if(strcmp(args[0]), builtin_str[i] == 0) {
+            return(*builtin_func[i])(args);
+        }
+    }
+
+    return lsh_launch(args);
 }
