@@ -1,4 +1,5 @@
 #include <sys/wait.h>
+#include <sys/types.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -6,14 +7,14 @@
 
 
 /* 
-    Function Declarations for bultin shell commands:
+    Function Declarations for builtin shell commands:
 */
 int lsh_cd(char **args);
 int lsh_help(char **args);
 int lsh_exit(char **args);
 
 /* 
-    List of builtin commands, followed by their corresponding fucntions.
+    List of builtin commands, followed by their corresponding functions.
 */
 char *builtin_str[] = {
     "cd",
@@ -50,14 +51,14 @@ int lsh_help(char **args)
 {
     int i;
     printf("Ryan Trinh's LSH\n");
-    printf("Type program names and arguements, and hit enter.\n");
+    printf("Type program names and arguments, and hit enter.\n");
     printf("The following are built in:\n");
 
-    for (i = 0; i < lsh_num_builtins(); i++){
+    for (i = 0; i < lsh_num_builtins(); i++) {
         printf("  %s\n", builtin_str[i]);
     }
 
-    printf("Use the man command for information on other programs. \n");
+    printf("Use the man command for information on other programs.\n");
     return 1;
 }
 
@@ -78,7 +79,7 @@ int lsh_launch(char **args)
             perror("lsh");
         }
         exit(EXIT_FAILURE);
-    } else if (pid < 0){
+    } else if (pid < 0) {
         //Error forking
         perror("lsh");
     } else {
@@ -109,7 +110,7 @@ int lsh_execute(char **args)
     return lsh_launch(args);
 }
 
-//Less efficient version of lsh_read_line
+//Less efficient version of lsh_read_line, without using getline
 /*
 #define LSH_RL_BUFSIZE 1024
 char *lsh_read_line(void)
@@ -149,6 +150,8 @@ char *lsh_read_line(void)
     }
 }
 */
+
+//Simplier version, which utilizes getline
 #define LSH_RL_BUFSIZE 1024
 char *lsh_read_line(void)
 {
